@@ -4,7 +4,7 @@ import React from 'react'
 const Login = () => {
   return (
     <View>
-      <Text>Loginjjjjjjjjjjjjjjjjjj</Text>
+      <Text className="text-xl font-bold text-blue-500">Loginjjjjjjjjjjjjjjjjjj</Text>
     </View>
   )
 }

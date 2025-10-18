@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import "./global.css"
 import RootStack from './app/navigation/RootStack';
 const App = () => {
   return <RootStack />;
