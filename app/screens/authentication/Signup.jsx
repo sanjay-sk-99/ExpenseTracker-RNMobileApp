@@ -1,14 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import SignupUi from './SignupUi';
 
 const Signup = () => {
-  return (
-    <View>
-      <Text>Signup</Text>
-    </View>
-  )
-}
+  return <SignupUi />;
+};
 
-export default Signup
+export default Signup;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

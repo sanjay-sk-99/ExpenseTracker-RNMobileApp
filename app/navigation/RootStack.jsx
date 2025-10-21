@@ -1,20 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import {navigationRef} from '../services/navigationService'
+import { UserContext } from '../context/userontext';
 import AuthStack from './AuthStack';
 import DrawerStack from './DrawerStack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Keychain from "react-native-keychain";
 import { ActivityIndicator, View } from 'react-native';
 
 export default function RootStack() {
   const [loading, setLoading] = useState(true);
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
-  useEffect(() => {
+useEffect(() => {
     const checkLogin = async () => {
-      const token = await AsyncStorage.getItem('token');
-      setUserLoggedIn(!!token);
-      setLoading(false);
+      try {
+        // Get stored token (if available)
+        const credentials = await Keychain.getGenericPassword();
+
+        if (credentials && credentials.password) {
+          setUserLoggedIn(true);
+        } else {
+          setUserLoggedIn(false);
+        }
+      } catch (error) {
+        console.warn("Error checking login status:", error);
+        setUserLoggedIn(false);
+      } finally {
+        setLoading(false);
+      }
     };
+
     checkLogin();
   }, []);
 
@@ -27,7 +42,7 @@ export default function RootStack() {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       {userLoggedIn ? <DrawerStack /> : <AuthStack />}
     </NavigationContainer>
   );
