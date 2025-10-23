@@ -12,8 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { colors } from '../../config/colors';
-import CustomTextInput from '../../components/CustomTextInput';
-import CustomAuthbutton from '../../components/CustomAuthButton';
+import CustomTextInput from '../../components/auth/CustomTextInput';
+import CustomAuthbutton from '../../components/auth/CustomAuthButton';
 const LoginUi = ({
   email,
   setEmail,
@@ -21,7 +21,6 @@ const LoginUi = ({
   setPassword,
   error,
   handleLogin,
-  navigation,
 }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -67,8 +66,9 @@ const LoginUi = ({
             {/* Login Button */}
             <CustomAuthbutton
               handleAuth={handleLogin}
-              navigation={navigation}
-              text={'Sign Up'}
+              navigateText={'SignUp'}
+              buttonText={"Login"}
+              textQuestion={'Don’t have an account? '}
             />
           </View>
         </ScrollView>
@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
   error: {
     color: colors.error,
     fontSize: moderateScale(12),
-    marginBottom: 8,
+    marginBottom: verticalScale(8),
   },
 });

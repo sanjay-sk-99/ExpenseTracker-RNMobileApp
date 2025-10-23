@@ -1,19 +1,25 @@
-import { StyleSheet, Text, View,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import { colors } from '../config/colors';
-const CustomAuthButton = ({handleAuth,navigation,text}) => {
+import { useNavigation } from '@react-navigation/native';
+import { colors } from '../../config/colors';
+const CustomAuthButton = ({ handleAuth, navigateText,buttonText, textQuestion }) => {
+  const navigation = useNavigation();
   return (
     <View>
       <TouchableOpacity onPress={handleAuth} style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>{buttonText}</Text>
       </TouchableOpacity>
 
-      {/* Signup Link */}
+      {/* Navigation Link */}
       <View style={styles.signupContainer}>
-        <Text style={styles.signupText}>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.signupLink}>{text}</Text>
+        <Text style={styles.signupText}>{textQuestion}</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigateText === 'SignUp' ? navigation.navigate(navigateText) : navigation.pop()
+          }
+        >
+          <Text style={styles.signupLink}>{navigateText}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -23,7 +29,7 @@ const CustomAuthButton = ({handleAuth,navigation,text}) => {
 export default CustomAuthButton;
 
 const styles = StyleSheet.create({
-      button: {
+  button: {
     backgroundColor: colors.primery,
     paddingVertical: verticalScale(12),
     borderRadius: 12,
