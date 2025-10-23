@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import LoginUi from './LoginUi';
 import { UserContext } from '../../context/userontext';
 import * as Keychain from 'react-native-keychain';
@@ -7,7 +6,6 @@ import axiosInstance from '../../services/axiosInstance';
 import { API_PATHS } from '../../services/endPoint';
 
 const Login = () => {
-  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -58,7 +56,6 @@ const Login = () => {
       setPassword={setPassword}
       error={error}
       handleLogin={handleLogin}
-      navigation={navigation}
     />
   );
 };
