@@ -40,10 +40,10 @@ const SignupUi = ({
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.imgContainer}>
-            <Text className="text-xl font-semibold text-black">
+            <Text className="text-2xl font-semibold text-black">
               Create an Account
             </Text>
-            <Text className="text-xs text-slate-700 mt-[5px] mb-6">
+            <Text className="text-base text-slate-700 mt-[5px] mb-6">
               Join us today by entering your details below.
             </Text>
 

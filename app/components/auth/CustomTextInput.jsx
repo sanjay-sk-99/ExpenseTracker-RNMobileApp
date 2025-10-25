@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
@@ -66,10 +72,10 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: verticalScale(4),
   },
- iconWrapper: {
+  iconWrapper: {
     position: 'absolute',
     right: moderateScale(10),
-    top: moderateScale(22),
+    top: moderateScale(24),
     transform: [{ translateY: -11 }],
   },
   label: {
