@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Platform } from 'react-native';
 
 //for email validation
 export const validateEmail = (email) => {
@@ -60,3 +61,25 @@ export const prepareExpenseLineChartData=(data=[])=>{
 
    return chartData;
 }
+
+
+
+export const getFixedImageUrl = (url) => {
+  if (!url) return null;
+
+  // Replace localhost with proper host for each platform
+  if (url.includes('localhost')) {
+   //  if (Platform.OS === 'android') {
+   //    // Android emulator uses 10.0.2.2 to access host
+   //    return url.replace('localhost', '10.0.2.2');
+   //  } else if (Platform.OS === 'ios') {
+   //    // iOS simulator can use 127.0.0.1
+   //    return url.replace('localhost', '127.0.0.1');
+   //  } else {
+      // Physical devices — use your LAN IP instead
+      return url.replace('localhost', '192.168.29.225'); // replace with your PC IP
+   //  }
+  }
+
+  return url;
+};

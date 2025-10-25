@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { UserContext } from '../../context/userontext';
 import * as Keychain from 'react-native-keychain';
-import axiosInstance from '../../services/axiosInstance';
+import { useAxiosInterceptors } from '../../services/axiosInstance';
 import { API_PATHS } from '../../services/endPoint';
 import { validateEmail } from '../../utils/helper';
 import SignupUi from './SignupUi';
+import uploadImage from '../../utils/uploadImage'
 
 const Signup = () => {
   const [profilePic, setProfilePic] = useState(null);
@@ -13,7 +14,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const { updateUser, setUserLoggedIn } = useContext(UserContext);
-
+  const axiosInstance = useAxiosInterceptors();
   const handleSignup = async e => {
     e.preventDefault();
 

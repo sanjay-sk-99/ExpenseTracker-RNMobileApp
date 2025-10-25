@@ -6,7 +6,6 @@ import AuthStack from './AuthStack';
 import DrawerStack from './DrawerStack';
 import * as Keychain from "react-native-keychain";
 import { ActivityIndicator, View } from 'react-native';
-
 export default function RootStack() {
   const [loading, setLoading] = useState(true);
   const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);

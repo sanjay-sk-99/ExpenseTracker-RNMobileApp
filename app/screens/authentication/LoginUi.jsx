@@ -34,6 +34,12 @@ const LoginUi = ({
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
         >
+          <Text className="text-2xl font-semibold text-black">
+            Welcome Back
+          </Text>
+          <Text className="text-base text-slate-700 mt-[5px] mb-6">
+            Please enter your details to log in.
+          </Text>
           <View style={styles.imgContainer}>
             <Image
               style={{ width: moderateScale(120), height: moderateScale(120) }}
@@ -67,7 +73,7 @@ const LoginUi = ({
             <CustomAuthbutton
               handleAuth={handleLogin}
               navigateText={'SignUp'}
-              buttonText={"Login"}
+              buttonText={'Login'}
               textQuestion={'Don’t have an account? '}
             />
           </View>

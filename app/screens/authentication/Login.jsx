@@ -2,14 +2,15 @@ import React, { useState, useContext } from 'react';
 import LoginUi from './LoginUi';
 import { UserContext } from '../../context/userontext';
 import * as Keychain from 'react-native-keychain';
-import axiosInstance from '../../services/axiosInstance';
+import { useAxiosInterceptors } from '../../services/axiosInstance';
 import { API_PATHS } from '../../services/endPoint';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { updateUser,setUserLoggedIn } = useContext(UserContext);
+  const { updateUser, setUserLoggedIn } = useContext(UserContext);
+  const axiosInstance = useAxiosInterceptors();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -24,7 +25,7 @@ const Login = () => {
     setError('');
 
     try {
-      // Call your login API
+
       const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
         email,
         password,
@@ -39,7 +40,7 @@ const Login = () => {
       await Keychain.setGenericPassword('auth', token);
       console.log('Token saved successfully to Keychain');
       updateUser(user);
-      setUserLoggedIn(true)
+      setUserLoggedIn(true);
     } catch (err) {
       console.error('Login error:', err.message);
       if (err.response?.data?.detail) {
