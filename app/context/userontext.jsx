@@ -5,7 +5,8 @@ export const UserContext = createContext();
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
- 
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const updateUser = userData => {
     setUser(userData);
   };
@@ -13,7 +14,7 @@ const UserProvider = ({ children }) => {
   //function to clear user data (eg.,logout)
   const clearUser = () => {
     setUser(null);
-    setUserLoggedIn(false)
+    setUserLoggedIn(false);
   };
 
   return (
@@ -24,6 +25,10 @@ const UserProvider = ({ children }) => {
         clearUser,
         userLoggedIn,
         setUserLoggedIn,
+        dashboardData,
+        setDashboardData,
+        loading,
+        setLoading,
       }}
     >
       {children}
