@@ -6,6 +6,7 @@ import AuthStack from './AuthStack';
 import DrawerStack from './DrawerStack';
 import * as Keychain from "react-native-keychain";
 import { ActivityIndicator, View } from 'react-native';
+import { Loader } from 'lucide-react-native';
 export default function RootStack() {
   const [loading, setLoading] = useState(true);
   const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
@@ -33,11 +34,7 @@ useEffect(() => {
   }, []);
 
   if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
+    <Loader/>
   }
 
   return (

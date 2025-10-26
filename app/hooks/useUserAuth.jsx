@@ -6,7 +6,7 @@ import { API_PATHS } from '../services/endPoint';
 export const useUserAuth = () => {
   const axiosInstance = useAxiosInterceptors();
   const { user, updateUser, clearUser } = useContext(UserContext);
-  7;
+  
 
   useEffect(() => {
     if (user) return;
