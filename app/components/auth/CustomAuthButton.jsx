@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity,ActivityIndicator } from 'react-native';
 import React from 'react';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../../config/colors';
-const CustomAuthButton = ({ handleAuth, navigateText,buttonText, textQuestion }) => {
+const CustomAuthButton = ({ handleAuth, navigateText,buttonText, textQuestion ,isLoading}) => {
   const navigation = useNavigation();
   return (
     <View>
       <TouchableOpacity onPress={handleAuth} style={styles.button}>
-        <Text style={styles.buttonText}>{buttonText}</Text>
+        {isLoading ? <ActivityIndicator color={colors.white}/> : <Text style={styles.buttonText}>{buttonText}</Text>}
       </TouchableOpacity>
 
       {/* Navigation Link */}

@@ -1,29 +1,29 @@
 import React, { useEffect, useContext } from 'react';
-import { Alert } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { UserContext } from '../context/userontext';
 import * as Keychain from 'react-native-keychain';
 import { useUserAuth } from '../hooks/useUserAuth';
 import Home from '../screens/dashboard/Home';
-import Income from '../screens/dashboard/Income';
-import Expense from '../screens/dashboard/Expense';
+import IncomeScreen from '../screens/dashboard/Income';
+import ExpenseScreen from '../screens/dashboard/Expense';
 import CustomDrawerContent from '../components/CustomDrawerContent';
-import { scale, moderateScale } from 'react-native-size-matters';
+import { scale, moderateScale, verticalScale } from 'react-native-size-matters';
+import { useToast } from 'react-native-toast-notifications';
 const Drawer = createDrawerNavigator();
 
 function LogoutScreen() {
   const { clearUser } = useContext(UserContext);
-
+   const toast = useToast()
   useEffect(() => {
     const logout = async () => {
       try {
         await Keychain.resetGenericPassword();
         console.log('Token cleared from Keychain');
-        Alert.alert('Logged Out', 'You have been successfully logged out.');
+        toast.show( 'You have been logged out successfully.',{type:'success'});
         clearUser();
       } catch (error) {
         console.error('Logout failed:', error);
-        Alert.alert('Error', 'Something went wrong while logging out.');
+        toast.show('Something went wrong while logging out.',{type:'danger'});
       }
     };
 
@@ -39,20 +39,21 @@ export default function DrawerStack() {
     <Drawer.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
-        headerTitle: 'Expense Tracker',
         drawerStyle: {
           width: scale(270),
+          marginTop: verticalScale(60),
         },
-        headerTitleStyle: {
-          fontSize: moderateScale(23),
-          fontWeight: moderateScale(600), 
-        },
+        headerShown: false,
+        drawerPosition: 'left',
+        drawerType: 'front',
+        overlayColor: 'transparent',
       }}
+      
       drawerContent={props => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="Dashboard" component={Home} />
-      <Drawer.Screen name="Income" component={Income} />
-      <Drawer.Screen name="Expense" component={Expense} />
+      <Drawer.Screen name="Income" component={IncomeScreen} />
+      <Drawer.Screen name="Expense" component={ExpenseScreen} />
       <Drawer.Screen name="Logout" component={LogoutScreen} />
     </Drawer.Navigator>
   );

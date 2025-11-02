@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
-import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { useEffect, useContext } from 'react';
 import { addThousandsSeparator } from '../../utils/helper';
 import { useAxiosInterceptors } from '../../services/axiosInstance';
 import { UserContext } from '../../context/userontext';
 import { API_PATHS } from '../../services/endPoint';
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 import InfoCard from '../../components/cards/InfoCard';
 import RecentTransactions from '../../components/dashboard/RecentTransactions';
 import ExpenseTransactions from '../../components/dashboard/ExpenseTransactions';
@@ -14,13 +14,13 @@ import RecentIncomeWithChart from '../../components/dashboard/RecentIncomeWithCh
 import RecentIncome from '../../components/dashboard/RecentIncome';
 import Feather from 'react-native-vector-icons/Feather';
 import { HandCoins, WalletMinimal } from 'lucide-react-native';
+import Header from '../../components/Header';
+
 const Home = () => {
-  // const [dashboardData, setDashboardData] = useState(null);
-  // const [loading, setLoading] = useState(false);
   const { dashboardData, setDashboardData, loading, setLoading } =
     useContext(UserContext);
   const axiosInstance = useAxiosInterceptors();
-
+  const navigation = useNavigation();
   const fetchData = async () => {
     if (loading) return;
 
@@ -46,59 +46,65 @@ const Home = () => {
   }, []);
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-      >
-        <InfoCard
-          icon={<Feather name="credit-card" size={26} color="#fff" />}
-          label="Total Balance"
-          value={addThousandsSeparator(dashboardData?.totalBalance || 0)}
-          color="#875cf5"
-        />
-        <InfoCard
-          icon={<WalletMinimal size={26} color="#fff" />}
-          label="Total Income"
-          value={addThousandsSeparator(dashboardData?.totalIncome || 0)}
-          color="#f97316"
-        />
-        <InfoCard
-          icon={<HandCoins size={26} color="#fff" />}
-          label="Total Expense"
-          value={addThousandsSeparator(dashboardData?.totalExpense || 0)}
-          color="#ef4444"
-        />
-
-        <View className="mt-6">
-          <RecentTransactions
-            transactions={dashboardData?.recentTransactions}
-            onSeeMore={() => console.log('navigate')}
+      <Header />
+      <ScrollView className="px-4" keyboardShouldPersistTaps="handled">
+        <View className="mx-4">
+          <InfoCard
+            icon={<Feather name="credit-card" size={26} color="#fff" />}
+            label="Total Balance"
+            value={addThousandsSeparator(dashboardData?.totalBalance || 0)}
+            color="#875cf5"
           />
-          <FinancialOverview
-            totalBalance={dashboardData?.totalBalance || 0}
-            totalIncome={dashboardData?.totalIncome || 0}
-            totalExpense={dashboardData?.totalExpense || 0}
+          <InfoCard
+            icon={<WalletMinimal size={26} color="#fff" />}
+            label="Total Income"
+            value={addThousandsSeparator(dashboardData?.totalIncome || 0)}
+            color="#f97316"
           />
-          <Last30DaysExpense
-            data={dashboardData?.last30DaysExpense?.transactions || []}
-          />
-          <ExpenseTransactions
-            transactions={dashboardData?.last30DaysExpense?.transactions || []}
-            onSeeMore={() => console.log('navigate')}
+          <InfoCard
+            icon={<HandCoins size={26} color="#fff" />}
+            label="Total Expense"
+            value={addThousandsSeparator(dashboardData?.totalExpense || 0)}
+            color="#ef4444"
           />
 
-          <RecentIncomeWithChart
-            data={
-              dashboardData?.last60DaysIncome?.transactions.slice(0, 5) || []
-            }
-            totalIncome={dashboardData?.totalIncome || 0}
-          />
-          <RecentIncome
-            transactions={
-              dashboardData?.last60DaysIncome?.transactions.slice(0, 5) || []
-            }
-            onSeeMore={() => console.log('navigate')}
-          />
+          <View className="mt-6 mb-6">
+            <RecentTransactions
+              transactions={dashboardData?.recentTransactions}
+              onSeeMore={() =>
+                dashboardData?.recentTransactions[0].type === 'expense'
+                  ? navigation.navigate('Expense')
+                  : navigation.navigate('Income')
+              }
+            />
+            <FinancialOverview
+              totalBalance={dashboardData?.totalBalance || 0}
+              totalIncome={dashboardData?.totalIncome || 0}
+              totalExpense={dashboardData?.totalExpense || 0}
+            />
+            <Last30DaysExpense
+              data={dashboardData?.last30DaysExpense?.transactions || []}
+            />
+            <ExpenseTransactions
+              transactions={
+                dashboardData?.last30DaysExpense?.transactions || []
+              }
+              onSeeMore={() => navigation.navigate('Expense')}
+            />
+
+            <RecentIncomeWithChart
+              data={
+                dashboardData?.last60DaysIncome?.transactions.slice(0, 5) || []
+              }
+              totalIncome={dashboardData?.totalIncome || 0}
+            />
+            <RecentIncome
+              transactions={
+                dashboardData?.last60DaysIncome?.transactions.slice(0, 5) || []
+              }
+              onSeeMore={() => navigation.navigate('Income')}
+            />
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -107,10 +113,4 @@ const Home = () => {
 
 export default Home;
 
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    paddingHorizontal: scale(24),
-    paddingVertical: verticalScale(20),
-  },
-});
+const styles = StyleSheet.create({});

@@ -5,7 +5,6 @@ import { scale } from 'react-native-size-matters';
 import { UserContext } from '../context/userontext';
 import { SIDE_MENU_DATA } from '../utils/sideMenuData';
 import CharAvatar from '../components/cards/CharAvatar';
-import Header from './Header';
 import { getFixedImageUrl } from '../utils/helper';
 
 export default function CustomDrawerContent({ navigation, state }) {
@@ -15,8 +14,6 @@ export default function CustomDrawerContent({ navigation, state }) {
     <DrawerContentScrollView
       contentContainerStyle={{ flex: 1, backgroundColor: 'white' }}
     >
-      {/* Header section */}
-      <Header />
       {/* Profile Section */}
       <View className="items-center justify-center mt-5 mb-5">
         {user?.profileImageUrl ? (
