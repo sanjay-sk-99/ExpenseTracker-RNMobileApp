@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { PieChart } from 'react-native-gifted-charts';
-import {scale,verticalScale, moderateScale } from 'react-native-size-matters';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import NoDataInfo from '../NoDataInfo';
 
 const CustomPieChart = ({
   data = [],
@@ -57,11 +58,7 @@ const CustomPieChart = ({
 
   // Handle no data
   if (chartData.length === 0) {
-    return (
-      <View className="bg-white rounded-xl p-6 shadow-md my-4 items-center justify-center">
-        <Text className="text-gray-500 text-base">No Data Available</Text>
-      </View>
-    );
+    return <NoDataInfo />;
   }
 
   return (

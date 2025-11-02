@@ -84,7 +84,7 @@ const IncomeScreen = () => {
     }
   };
 
-  //  Download income
+  // ✅ Download income
   const handleDownloadIncomeDetails = async () => {
     try {
       // Get your auth token from storage or state
@@ -129,9 +129,8 @@ const IncomeScreen = () => {
 
   return (
     <View className="flex-1 bg-white">
-        <Header />
+      <Header />
       <ScrollView className="px-4">
-      
         {/* Income Overview */}
         <IncomeOverview
           transactions={incomeData}
@@ -171,10 +170,7 @@ const IncomeScreen = () => {
               </TouchableOpacity>
             </View>
 
-            <AddIncomeForm
-              onAddIncome={handleAddIncome}
-              onClose={() => setOpenAddIncomeModal(false)}
-            />
+            <AddIncomeForm onAddIncome={handleAddIncome} />
           </View>
         </View>
       </Modal>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { ArrowRight } from 'lucide-react-native';
 import moment from 'moment';
 import TransactionInfoCard from '../cards/TransactionInfoCard';
@@ -41,7 +41,7 @@ const ExpenseTransactions = ({ transactions, onSeeMore }) => {
               date={moment(expense.date).format('DD MMM YYYY')}
               amount={expense.amount}
               type={expense.type}
-              hideDeleteBtn={true} // hide swipe delete in this list
+              hideDeleteBtn={true} 
             />
           ))}
         </View>

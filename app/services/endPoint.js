@@ -1,6 +1,6 @@
 export const BASE_URL = "http://192.168.29.225:8000";
 
-//utils/apipath.js
+
 export const API_PATHS = {
     AUTH: {
         LOGIN: "/api/v1/auth/login",

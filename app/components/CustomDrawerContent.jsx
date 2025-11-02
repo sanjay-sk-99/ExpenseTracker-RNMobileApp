@@ -65,28 +65,4 @@ export default function CustomDrawerContent({ navigation, state }) {
   );
 }
 
-// import React from 'react';
-// import { DrawerContentScrollView } from '@react-navigation/drawer';
-// import { View, Text, TouchableOpacity } from 'react-native';
 
-// export default function CustomDrawerContent(props) {
-//   return (
-//     <DrawerContentScrollView {...props}>
-//       <View style={{ padding: 20 }}>
-//         <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 20 }}>
-//           Drawer Loaded ✅
-//         </Text>
-
-//         {props.state?.routeNames?.map((name) => (
-//           <TouchableOpacity
-//             key={name}
-//             style={{ paddingVertical: 10 }}
-//             onPress={() => props.navigation.navigate(name)}
-//           >
-//             <Text>{name}</Text>
-//           </TouchableOpacity>
-//         ))}
-//       </View>
-//     </DrawerContentScrollView>
-//   );
-// }

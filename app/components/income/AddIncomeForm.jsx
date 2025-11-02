@@ -9,7 +9,7 @@ import {
 import EmojiPickerPopup from '../EmojiPickerPopup';
 import CustomTextInput from '../auth/CustomTextInput';
 import { colors } from '../../config/colors';
-const AddIncomeForm = ({ onAddIncome, onClose }) => {
+const AddIncomeForm = ({ onAddIncome }) => {
   const [income, setIncome] = useState({
     source: '',
     amount: '',

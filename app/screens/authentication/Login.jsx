@@ -46,7 +46,6 @@ const Login = () => {
       updateUser(user);
       setUserLoggedIn(true);
     } catch (err) {
-      // console.error('Login error:', err.message);
       if (err.response?.data?.detail) {
         setError(err.response.data.detail);
       }
