@@ -4,7 +4,7 @@ import { X } from 'lucide-react-native';
 import { colors } from '../config/colors';
 const DeleteAlert = ({ content, onDelete, onClose }) => {
   return (
-    <View className="p-4">
+    <View>
       {/* Header: Content + Close Icon */}
       <View className="flex-row justify-between  items-center mb-3 ">
         <Text className="text-lg font-bold text-gray-700 flex-1">Delete Income</Text>
