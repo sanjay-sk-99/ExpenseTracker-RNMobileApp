@@ -9,7 +9,8 @@ import {
 import EmojiPickerPopup from '../EmojiPickerPopup';
 import CustomTextInput from '../auth/CustomTextInput';
 import { colors } from '../../config/colors';
-const AddExpenseForm = ({ onAddExpense, onClose }) => {
+
+const AddExpenseForm = ({ onAddExpense }) => {
   const [expense, setExpense] = useState({
         category: "",
         amount: "",

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import CustomBarChart from '../charts/CustomBarChart';
 import CustomLineChart from '../charts/CustomLineChart'
 import { prepareExpenseLineChartData } from '../../utils/helper';
 

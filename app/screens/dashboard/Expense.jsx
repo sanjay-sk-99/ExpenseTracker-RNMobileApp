@@ -19,7 +19,7 @@ import ExpenseList from '../../components/expense/ExpenseList';
 import AddExpenseForm from '../../components/expense/AddExpenseForm';
 import DeleteAlert from '../../components/DeleteAlert';
 import { X } from 'lucide-react-native';
-import { scale, verticalScale } from 'react-native-size-matters';
+
 const ExpenseScreen = () => {
   const [expenseData, setExpenseData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -191,10 +191,7 @@ const ExpenseScreen = () => {
               </TouchableOpacity>
             </View>
 
-            <AddExpenseForm
-              onAddExpense={handleAddExpense}
-              onClose={() => setOpenAddExpenseModel(false)}
-            />
+            <AddExpenseForm onAddExpense={handleAddExpense} />
           </View>
         </View>
       </Modal>
