@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 import { scale, moderateScale, verticalScale } from 'react-native-size-matters';
 const CustomBarChart = ({ data = [] }) => {
-  
   // Alternating bar colors
   const getBarColor = index => {
     return index % 2 === 0 ? '#875cf5' : '#cfbefb';
@@ -12,8 +11,10 @@ const CustomBarChart = ({ data = [] }) => {
   // Prepare chart data for gifted-charts
   const chartData = data.map((item, index) => ({
     value: Number(item.amount) || 0,
-    label: item.category || '',
+    label: item.category || item.source || '',
     frontColor: getBarColor(index),
+    month: item.month,
+    category: item.category,
   }));
 
   // Handle empty data
@@ -69,7 +70,7 @@ const CustomBarChart = ({ data = [] }) => {
               }}
             >
               <Text className="text-xs font-semibold text-purple-800 text-center">
-                {item.label}
+                {item.category || item.month}
               </Text>
               <Text className="text-sm text-gray-600 text-center mt-1">
                 ₹{item.value}

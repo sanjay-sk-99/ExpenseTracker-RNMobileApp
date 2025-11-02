@@ -17,6 +17,10 @@ const TransactionInfoCard = ({
   hideDeleteBtn,
   onDelete,
 }) => {
+  const isUrl =
+    typeof icon === 'string' &&
+    (icon.startsWith('http://') || icon.startsWith('https://'));
+
   const getAmountStyles = () =>
     type === 'income'
       ? 'bg-green-100 text-green-600'
@@ -49,7 +53,16 @@ const TransactionInfoCard = ({
       <View className="flex-row items-center gap-4 mt-2 p-3 rounded-lg bg-white shadow-sm">
         <View className="w-12 h-12 bg-gray-100 rounded-full justify-center items-center">
           {icon ? (
-            <Image source={{ uri: icon }} className="w-6 h-6" />
+            typeof icon === 'string' &&
+            (icon.startsWith('http://') || icon.startsWith('https://')) ? (
+              <Image
+                source={{ uri: icon }}
+                className="w-6 h-6"
+                resizeMode="contain"
+              />
+            ) : (
+              <Text className="text-2xl">{icon}</Text>
+            )
           ) : (
             <Utensils color="#1f2937" size={20} />
           )}

@@ -21,10 +21,11 @@ const LoginUi = ({
   setPassword,
   error,
   handleLogin,
+  isLoading
 }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <Header />
+      <Header showDrawer={false}/>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -75,6 +76,7 @@ const LoginUi = ({
               navigateText={'SignUp'}
               buttonText={'Login'}
               textQuestion={'Don’t have an account? '}
+              isLoading={isLoading}
             />
           </View>
         </ScrollView>
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     paddingHorizontal: scale(24),
-    paddingVertical: verticalScale(20),
+    paddingVertical: verticalScale(12),
   },
   imgContainer: {
     flex: 0.5,
