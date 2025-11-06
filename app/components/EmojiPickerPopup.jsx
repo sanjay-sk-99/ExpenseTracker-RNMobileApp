@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, Pressable, Image } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import EmojiModal from 'react-native-emoji-modal';
 import { scale } from 'react-native-size-matters';
+
 const EmojiPickerPopup = ({ icon, onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const isUrl =
+    icon && (icon.startsWith('http://') || icon.startsWith('https://'));
   const handleSelect = emojiObj => {
     onSelect(emojiObj);
     setIsOpen(false);
@@ -23,7 +25,13 @@ const EmojiPickerPopup = ({ icon, onSelect }) => {
           className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center"
           style={{ marginHorizontal: scale(16) }}
         >
-          {icon ? (
+          {isUrl ? (
+            <Image
+              source={{ uri: icon }}
+              className="w-7 h-7"
+              resizeMode="contain"
+            />
+          ) : icon ? (
             <Text className="text-3xl">{icon}</Text>
           ) : (
             <MaterialCommunityIcons
