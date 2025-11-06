@@ -6,18 +6,18 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
+import moment from 'moment';
 import EmojiPickerPopup from '../EmojiPickerPopup';
 import CustomTextInput from '../auth/CustomTextInput';
 import { colors } from '../../config/colors';
 
-const AddExpenseForm = ({ onAddExpense }) => {
-  const [expense, setExpense] = useState({
-        category: "",
-        amount: "",
-        date: "",
-        icon: ""
-  });
-
+const AddExpenseForm = ({
+  onAddExpense,
+  onUpdateExpense,
+  updateId,
+  expense,
+  setExpense,
+}) => {
   const handleChange = (key, value) => setExpense({ ...expense, [key]: value });
 
   return (
@@ -39,7 +39,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
         <CustomTextInput
           label="Expense Category"
           style={{ fontColor: '#1d293d' }}
-          value={expense.source}
+          value={expense.category}
           onChangeText={text => handleChange('category', text)}
           placeholder="Rent, Groceries, etc"
           keyboardType="default"
@@ -49,7 +49,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
         <CustomTextInput
           label="Amount"
           style={{ fontColor: '#1d293d' }}
-          value={expense.amount}
+          value={String(expense.amount)}
           onChangeText={text => handleChange('amount', text)}
           placeholder="Enter amount"
           keyboardType="numeric"
@@ -60,7 +60,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
           label="Date"
           type="date"
           style={{ fontColor: '#1d293d' }}
-          value={expense.date}
+          value={expense?.date ? moment(expense.date).format('YYYY-MM-DD') : ''}
           onChangeText={text => handleChange('date', text)}
           placeholder="YYYY-MM-DD"
           keyboardType="date"
@@ -68,15 +68,27 @@ const AddExpenseForm = ({ onAddExpense }) => {
 
         {/* Add Expense Button */}
         <View className="flex-row justify-end mt-6">
-          <TouchableOpacity
-            className=" flex items-center gap-1.5 text-xs font-medium text-purple-600 whitespace-nowrap bg-purple-50 border border-purple-100 rounded-lg px-4 py-2 "
-            style={{ backgroundColor: colors.primery }}
-            onPress={() => onAddExpense(expense)}
-          >
-            <Text className="text-white font-semibold text-sm text-center">
-              Add Expense
-            </Text>
-          </TouchableOpacity>
+          {updateId ? (
+            <TouchableOpacity
+              className=" flex items-center gap-1.5 text-xs font-medium text-purple-600 whitespace-nowrap bg-purple-50 border border-purple-100 rounded-lg px-4 py-2 "
+              style={{ backgroundColor: colors.primery }}
+              onPress={() => onUpdateExpense(expense)} // call correct prop
+            >
+              <Text className="text-white font-semibold text-sm text-center">
+                Update expense
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              className=" flex items-center gap-1.5 text-xs font-medium text-purple-600 whitespace-nowrap bg-purple-50 border border-purple-100 rounded-lg px-4 py-2 "
+              style={{ backgroundColor: colors.primery }}
+              onPress={() => onAddExpense(expense)}
+            >
+              <Text className="text-white font-semibold text-sm text-center">
+                Add Expense
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

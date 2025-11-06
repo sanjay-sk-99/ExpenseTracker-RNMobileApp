@@ -22,11 +22,22 @@ import { X } from 'lucide-react-native';
 
 const IncomeScreen = () => {
   const [incomeData, setIncomeData] = useState([]);
+  const [income, setIncome] = useState({
+    source: '',
+    amount: '',
+    date: '',
+    icon: '',
+  });
   const [loading, setLoading] = useState(false);
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [updateId, setUpdateId] = useState(null);
   const toast = useToast();
   const axiosInstance = useAxiosInterceptors();
+
+  useEffect(() => {
+    fetchIncomeDetails();
+  }, []);
 
   // ✅ Fetch all income details
   const fetchIncomeDetails = async () => {
@@ -65,6 +76,8 @@ const IncomeScreen = () => {
       setOpenAddIncomeModal(false);
       toast.show('Income added successfully', { type: 'success' });
       fetchIncomeDetails();
+      // reset form
+      setIncome({ source: '', amount: '', date: '', icon: '' });
     } catch (error) {
       console.error('Error adding income:', error);
       toast.show('Failed to add income', { type: 'danger' });
@@ -81,6 +94,39 @@ const IncomeScreen = () => {
     } catch (error) {
       console.error('Error deleting income:', error);
       toast.show('Failed to delete income', { type: 'danger' });
+    }
+  };
+
+  const handleUpdate = income => {
+    // open modal for update with existing values
+    setUpdateId(income._id);
+    setIncome({
+      source: income.source,
+      amount: income.amount,
+      date: income.date,
+      icon: income.icon,
+    });
+    setOpenAddIncomeModal(true);
+  };
+  //update income
+  const updateIncome = async income => {
+    const { source, amount, date, icon } = income;
+    try {
+      await axiosInstance.put(API_PATHS.INCOME.UPDATE_INCOME(updateId), {
+        source,
+        amount,
+        date,
+        icon,
+      });
+      fetchIncomeDetails();
+      toast.show('Income updated successfully', { type: 'success' });
+      // close modal and reset update state
+      setOpenAddIncomeModal(false);
+      setUpdateId(null);
+      setIncome({ source: '', amount: '', date: '', icon: '' });
+    } catch (error) {
+      console.error('Error updating income:', error);
+      toast.show('Failed to update income', { type: 'danger' });
     }
   };
 
@@ -123,10 +169,6 @@ const IncomeScreen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchIncomeDetails();
-  }, []);
-
   return (
     <View className="flex-1 bg-white">
       <Header />
@@ -134,7 +176,12 @@ const IncomeScreen = () => {
         {/* Income Overview */}
         <IncomeOverview
           transactions={incomeData}
-          onAddIncome={() => setOpenAddIncomeModal(true)}
+          onAddIncome={() => {
+            // clear update state when opening add modal
+            setUpdateId(null);
+            setIncome({ source: '', amount: '', date: '', icon: '' });
+            setOpenAddIncomeModal(true);
+          }}
         />
 
         {/* Income List */}
@@ -142,6 +189,7 @@ const IncomeScreen = () => {
           transactions={incomeData}
           onDelete={id => setDeleteId(id)}
           onDownload={handleDownloadIncomeDetails}
+          onHandleUpdate={handleUpdate}
         />
 
         {loading && (
@@ -154,23 +202,37 @@ const IncomeScreen = () => {
         visible={openAddIncomeModal}
         animationType="slide"
         transparent
-        onRequestClose={() => setOpenAddIncomeModal(false)}
+        onRequestClose={() => {
+          setOpenAddIncomeModal(false);
+          setUpdateId(null); // clear update state when modal closed
+          setIncome({ source: '', amount: '', date: '', icon: '' });
+        }}
       >
         <View className="flex-1 justify-center bg-black/50">
           <View className="flex bg-white mx-5 rounded-2xl p-5">
             <View className="flex-row justify-between rounded-2xl mb-2">
               <Text className="text-lg font-semibold mb-3 text-gray-800">
-                Add Income
+                {updateId ? 'Update Income' : 'Add Income'}
               </Text>
               <TouchableOpacity
-                onPress={() => setOpenAddIncomeModal(false)}
+                onPress={() => {
+                  setOpenAddIncomeModal(false);
+                  setUpdateId(null);
+                  setIncome({ source: '', amount: '', date: '', icon: '' });
+                }}
                 className="p-1"
               >
                 <X size={24} color="#4B5563" />
               </TouchableOpacity>
             </View>
 
-            <AddIncomeForm onAddIncome={handleAddIncome} />
+            <AddIncomeForm
+              onAddIncome={handleAddIncome}
+              onUpdateIncome={updateIncome}
+              updateId={updateId}
+              income={income}
+              setIncome={setIncome}
+            />
           </View>
         </View>
       </Modal>

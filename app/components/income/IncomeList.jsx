@@ -5,7 +5,7 @@ import { Download } from 'lucide-react-native';
 import TransactionInfoCard from '../cards/TransactionInfoCard';
 import NoDataInfo from '../NoDataInfo';
 
-const IncomeList = ({ onDelete, onDownload, transactions }) => {
+const IncomeList = ({ onDelete, onDownload, transactions,onHandleUpdate }) => {
 
   return (
     <View className="bg-white rounded-2xl p-4 shadow-md mt-3 mb-10 mx-4">
@@ -36,6 +36,7 @@ const IncomeList = ({ onDelete, onDownload, transactions }) => {
                   amount={income.amount}
                   type="income"
                   onDelete={() => onDelete(income._id)}
+                  onHandleUpdate={()=>onHandleUpdate(income)}
                 />
               </View>
             ))}

@@ -25,8 +25,19 @@ const ExpenseScreen = () => {
   const [loading, setLoading] = useState(false);
   const [openAddExpenseModel, setOpenAddExpenseModel] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [expense, setExpense] = useState({
+    category: '',
+    amount: '',
+    date: '',
+    icon: '',
+  });
+  const [updateId, setUpdateId] = useState(null);
   const toast = useToast();
   const axiosInstance = useAxiosInterceptors();
+
+  useEffect(() => {
+    fetchExpenseDetails();
+  }, []);
 
   //Get All Expense Details
   const fetchExpenseDetails = async () => {
@@ -81,6 +92,13 @@ const ExpenseScreen = () => {
       setOpenAddExpenseModel(false);
       toast.show('Expense added successfully', { type: 'success' });
       fetchExpenseDetails();
+      // reset form
+      setExpense({
+        category: '',
+        amount: '',
+        date: '',
+        icon: '',
+      });
     } catch (error) {
       console.error(
         'error adding expense:',
@@ -96,6 +114,7 @@ const ExpenseScreen = () => {
       await axiosInstance.delete(API_PATHS.EXPENSE.DELETE_EXPENSE(id));
       toast.show('Expense deleted successfully', { type: 'success' });
       fetchExpenseDetails();
+      setDeleteId(null);
     } catch (error) {
       console.error(
         'Error deleting Expense',
@@ -105,9 +124,38 @@ const ExpenseScreen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchExpenseDetails();
-  }, []);
+  const handleUpdate = expense => {
+    // open modal for update with existing values
+    setUpdateId(expense._id);
+    setExpense({
+      category: expense.category,
+      amount: expense.amount,
+      date: expense.date,
+      icon: expense.icon,
+    });
+    setOpenAddExpenseModel(true);
+  };
+  //update income
+  const updateExpense = async expense => {
+    const { category, amount, date, icon } = expense;
+    try {
+      await axiosInstance.put(API_PATHS.EXPENSE.UPDATE_EXPENSE(updateId), {
+        category,
+        amount,
+        date,
+        icon,
+      });
+      fetchExpenseDetails();
+      toast.show('Expense updated successfully', { type: 'success' });
+      // close modal and reset update state
+      setOpenAddExpenseModel(false);
+      setUpdateId(null);
+      setExpense({ source: '', amount: '', date: '', icon: '' });
+    } catch (error) {
+      console.error('Error updating Expense:', error);
+      toast.show('Failed to update Expense', { type: 'danger' });
+    }
+  };
 
   // ✅ Download income
   const handleDownloadExpenseDetails = async () => {
@@ -155,7 +203,11 @@ const ExpenseScreen = () => {
         {/* Expense Overview */}
         <ExpenseOverview
           transactions={expenseData}
-          onAddExpense={() => setOpenAddExpenseModel(true)}
+          onAddExpense={() => {
+            setUpdateId(null);
+            setExpense({ category: '', amount: '', date: '', icon: '' });
+            setOpenAddExpenseModel(true);
+          }}
         />
 
         {/* Expense List */}
@@ -163,6 +215,7 @@ const ExpenseScreen = () => {
           transactions={expenseData}
           onDelete={id => setDeleteId(id)}
           onDownload={handleDownloadExpenseDetails}
+          onHandleUpdate={handleUpdate}
         />
 
         {loading && (
@@ -175,7 +228,11 @@ const ExpenseScreen = () => {
         visible={openAddExpenseModel}
         animationType="slide"
         transparent
-        onRequestClose={() => setOpenAddExpenseModel(false)}
+        onRequestClose={() => {
+          setOpenAddExpenseModel(false);
+          setUpdateId(null); // clear update state when modal closed
+          setExpense({ category: '', amount: '', date: '', icon: '' });
+        }}
       >
         <View className="flex-1 justify-center bg-black/50">
           <View className="flex bg-white mx-5 rounded-2xl p-5">
@@ -184,14 +241,24 @@ const ExpenseScreen = () => {
                 Add Expense
               </Text>
               <TouchableOpacity
-                onPress={() => setOpenAddExpenseModel(false)}
+                onPress={() => {
+                  setOpenAddExpenseModel(false);
+                  setUpdateId(null); // clear update state when modal closed
+                  setExpense({ category: '', amount: '', date: '', icon: '' });
+                }}
                 className="p-1"
               >
                 <X size={24} color="#4B5563" />
               </TouchableOpacity>
             </View>
 
-            <AddExpenseForm onAddExpense={handleAddExpense} />
+            <AddExpenseForm
+              onAddExpense={handleAddExpense}
+              onUpdateExpense={updateExpense}
+              updateId={updateId}
+              expense={expense}
+              setExpense={setExpense}
+            />
           </View>
         </View>
       </Modal>

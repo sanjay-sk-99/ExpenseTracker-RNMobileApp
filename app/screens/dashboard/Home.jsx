@@ -30,7 +30,7 @@ const Home = () => {
       const response = await axiosInstance.get(
         `${API_PATHS.DASHBOARD.GET_DATA}`,
       );
-      console.log(response.data);
+      
       if (response.data) {
         setDashboardData(response.data);
       }
@@ -43,6 +43,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchData();
+    console.log("home")
   }, []);
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>

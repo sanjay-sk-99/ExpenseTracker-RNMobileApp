@@ -6,6 +6,7 @@ import {
   TrendingUp,
   TrendingDown,
   Trash2,
+  Edit2, // added edit icon
 } from 'lucide-react-native';
 
 const TransactionInfoCard = ({
@@ -16,6 +17,7 @@ const TransactionInfoCard = ({
   type,
   hideDeleteBtn,
   onDelete,
+  onHandleUpdate,
 }) => {
   const isUrl =
     typeof icon === 'string' &&
@@ -34,14 +36,25 @@ const TransactionInfoCard = ({
     });
 
     return (
-      <TouchableOpacity
-        onPress={onDelete}
-        className="bg-red-500 w-16 justify-center items-center rounded-r-lg"
-      >
-        <Animated.View style={{ transform: [{ scale }] }}>
-          <Trash2 color="#fff" size={22} />
-        </Animated.View>
-      </TouchableOpacity>
+      <>
+        <TouchableOpacity
+          onPress={onHandleUpdate}
+          className="bg-green-500 w-16 mt-2 justify-center items-center rounded-r-lg"
+        >
+          <Animated.View style={{ transform: [{ scale }] }}>
+            <Edit2 color="#fff" size={22} />
+          </Animated.View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={onDelete}
+          className="bg-red-500 w-16 mt-2 justify-center items-center "
+        >
+          <Animated.View style={{ transform: [{ scale }] }}>
+            <Trash2 color="#fff" size={22} />
+          </Animated.View>
+        </TouchableOpacity>
+      </>
     );
   };
 
