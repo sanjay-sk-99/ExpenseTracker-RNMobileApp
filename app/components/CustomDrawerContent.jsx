@@ -5,7 +5,6 @@ import { scale } from 'react-native-size-matters';
 import { UserContext } from '../context/userontext';
 import { SIDE_MENU_DATA } from '../utils/sideMenuData';
 import CharAvatar from '../components/cards/CharAvatar';
-import { getFixedImageUrl } from '../utils/helper';
 
 export default function CustomDrawerContent({ navigation, state }) {
   const { user } = useContext(UserContext);
@@ -18,7 +17,7 @@ export default function CustomDrawerContent({ navigation, state }) {
       <View className="items-center justify-center mt-5 mb-5">
         {user?.profileImageUrl ? (
           <Image
-            source={{ uri: getFixedImageUrl(user.profileImageUrl) }}
+            source={{ uri:user.profileImageUrl }}
             className="rounded-full bg-slate-400"
             style={{ width: scale(110), height: scale(110) }}
           />
