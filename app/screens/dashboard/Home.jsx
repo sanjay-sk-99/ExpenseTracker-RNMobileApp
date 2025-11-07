@@ -1,10 +1,11 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext,useCallback } from 'react';
 import { addThousandsSeparator } from '../../utils/helper';
 import { useAxiosInterceptors } from '../../services/axiosInstance';
 import { UserContext } from '../../context/userontext';
 import { API_PATHS } from '../../services/endPoint';
 import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import InfoCard from '../../components/cards/InfoCard';
 import RecentTransactions from '../../components/dashboard/RecentTransactions';
 import ExpenseTransactions from '../../components/dashboard/ExpenseTransactions';
@@ -41,10 +42,11 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-    console.log("home")
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <Header />
