@@ -5,7 +5,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Modal,
-  ActivityIndicator,
 } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import * as Keychain from 'react-native-keychain';
@@ -132,6 +131,9 @@ const IncomeScreen = () => {
 
   // ✅ Download income
   const handleDownloadIncomeDetails = async () => {
+    if (incomeData.length === 0) {
+      return toast.show('No Incomes to download', { type: 'info' });
+    }
     try {
       // Get your auth token from storage or state
       const token = await Keychain.getGenericPassword();
@@ -191,10 +193,6 @@ const IncomeScreen = () => {
           onDownload={handleDownloadIncomeDetails}
           onHandleUpdate={handleUpdate}
         />
-
-        {loading && (
-          <ActivityIndicator size="large" color="#4F46E5" className="mt-4" />
-        )}
       </ScrollView>
 
       {/* Add Income Modal */}
