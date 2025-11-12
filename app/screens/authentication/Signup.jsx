@@ -6,18 +6,19 @@ import { useAxiosInterceptors } from '../../services/axiosInstance';
 import { API_PATHS } from '../../services/endPoint';
 import { validateEmail } from '../../utils/helper';
 import SignupUi from './SignupUi';
-import uploadImage from '../../utils/uploadImage'
+import uploadImage from '../../utils/uploadImage';
 
 const Signup = () => {
-  const [profilePic, setProfilePic] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-    const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { updateUser, setUserLoggedIn } = useContext(UserContext);
   const axiosInstance = useAxiosInterceptors();
-  const toast = useToast()
+ 
+  const toast = useToast();
   const handleSignup = async e => {
     e.preventDefault();
 
@@ -42,10 +43,11 @@ const Signup = () => {
 
     //Sign up api call
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       //upload image url if present
-      if (profilePic) {
-        const imgUploadRes = await uploadImage(profilePic);
+      
+      if (profileImage) {
+        const imgUploadRes = await uploadImage(axiosInstance,profileImage);
         profileImageUrl = imgUploadRes.imageUrl || '';
       }
 
@@ -60,7 +62,7 @@ const Signup = () => {
       // Save JWT token securely
       await Keychain.setGenericPassword('auth', token);
       console.log('Token saved successfully to Keychain');
-      toast.show("signup successfully",{type:'success'})
+      toast.show('signup successfully', { type: 'success' });
       updateUser(user);
       setUserLoggedIn(true);
     } catch (error) {
@@ -69,8 +71,8 @@ const Signup = () => {
       } else {
         setError('Something went wrong. Please try again.');
       }
-    }finally{
-      setIsLoading(false)
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -83,8 +85,8 @@ const Signup = () => {
       setPassword={setPassword}
       error={error}
       handleSignup={handleSignup}
-      profileImage={profilePic}
-      setProfileImage={setProfilePic}
+      profileImage={profileImage}
+      setProfileImage={setProfileImage}
       isLoading={isLoading}
     />
   );
