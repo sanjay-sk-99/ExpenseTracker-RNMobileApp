@@ -1,8 +1,7 @@
-import { useAxiosInterceptors } from '../services/axiosInstance';
-import { API_PATHS } from './apipath';
+import { API_PATHS } from '../services/endPoint';
 
-const uploadImage = async image => {
-  const axiosInstance = useAxiosInterceptors();
+const uploadImage = async (axiosInstance,image) => {
+
   try {
     const formData = new FormData();
 
@@ -22,12 +21,13 @@ const uploadImage = async image => {
         },
       },
     );
-
     return response.data;
   } catch (error) {
-    console.error('Error uploading the image:', error);
+    console.error('Error uploading the image:', error.response.data);
     throw error;
   }
 };
 
 export default uploadImage;
+
+

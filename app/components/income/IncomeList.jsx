@@ -6,7 +6,7 @@ import TransactionInfoCard from '../cards/TransactionInfoCard';
 import NoDataInfo from '../NoDataInfo';
 
 const IncomeList = ({ onDelete, onDownload, transactions,onHandleUpdate }) => {
-
+console.log(transactions)
   return (
     <View className="bg-white rounded-2xl p-4 shadow-md mt-3 mb-10 mx-4">
       {/* Header */}

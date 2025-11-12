@@ -49,8 +49,8 @@ const SignupUi = ({
             </Text>
 
             <ProfilePhotoSelector
-              image={profileImage}
-              setImage={setProfileImage}
+              profileImage={profileImage}
+              setProfileImage={setProfileImage}
             />
           </View>
           <View style={styles.formContainer}>

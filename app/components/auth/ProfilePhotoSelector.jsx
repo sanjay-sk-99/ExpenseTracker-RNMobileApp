@@ -3,8 +3,8 @@ import { View, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import { colors } from '../../config/colors';
-const ProfilePhotoSelector = ({ image, setImage }) => {
+
+const ProfilePhotoSelector = ({ profileImage, setProfileImage }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
 
   const handleImageChange = async () => {
@@ -26,7 +26,7 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
         Alert.alert('Error', result.errorMessage || 'Failed to pick image');
       } else if (result.assets && result.assets.length > 0) {
         const selectedImage = result.assets[0];
-        setImage(selectedImage);
+        setProfileImage(selectedImage);
         setPreviewUrl(selectedImage.uri);
       }
     } catch (error) {
@@ -36,13 +36,13 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
   };
 
   const handleRemoveImage = () => {
-    setImage(null);
+    setProfileImage(null);
     setPreviewUrl(null);
   };
 
   return (
     <View style={styles.container}>
-      {!image ? (
+      {!profileImage ? (
         <View style={styles.avatarContainer}>
           <View style={styles.avatarCircle}>
             <Icon name="user" size={40} color="#6875F5" />

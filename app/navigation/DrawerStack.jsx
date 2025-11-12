@@ -12,7 +12,7 @@ import { useToast } from 'react-native-toast-notifications';
 const Drawer = createDrawerNavigator();
 
 function LogoutScreen() {
-  const { clearUser } = useContext(UserContext);
+  const { clearUser,setDashboardData } = useContext(UserContext);
    const toast = useToast()
   useEffect(() => {
     const logout = async () => {
@@ -21,6 +21,7 @@ function LogoutScreen() {
         console.log('Token cleared from Keychain');
         toast.show( 'You have been logged out successfully.',{type:'success'});
         clearUser();
+        setDashboardData(null);
       } catch (error) {
         console.error('Logout failed:', error);
         toast.show('Something went wrong while logging out.',{type:'danger'});
