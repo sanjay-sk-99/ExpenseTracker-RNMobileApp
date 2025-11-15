@@ -101,7 +101,7 @@ const App = () => {
         }}
       >
         <UserProvider>
-          <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+          <StatusBar translucent={false} barStyle="dark-content" backgroundColor="#ffffff" />
           <RootStack />
         </UserProvider>
       </ToastProvider>
