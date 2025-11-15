@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import CustomBarChart from '../charts/CustomBarChart';
+import Loader from '../Loader';
+const CustomBarChart = lazy(() => import('../charts/CustomBarChart'));
 import { prepareIncomeBarChartData } from '../../utils/helper';
 
 const IncomeOverview = ({ transactions, onAddIncome }) => {
@@ -30,8 +31,10 @@ const IncomeOverview = ({ transactions, onAddIncome }) => {
           className="flex-row items-center justify-center gap-1.5  text-purple-600 whitespace-nowrap bg-purple-50 border border-purple-100 rounded-lg px-2 py-2 "
           onPress={onAddIncome}
         >
-          <Plus color='#9333ea'/>
-          <Text className="flex justify-center font-semibold text-lg text-purple-600">Add Income</Text>
+          <Plus color="#9333ea" />
+          <Text className="flex justify-center font-semibold text-lg text-purple-600">
+            Add Income
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -41,7 +44,9 @@ const IncomeOverview = ({ transactions, onAddIncome }) => {
         showsHorizontalScrollIndicator={false}
         className="mt-6"
       >
-        <CustomBarChart data={chartData} />
+        <Suspense fallback={<Loader />}>
+          <CustomBarChart data={chartData} />
+        </Suspense>
       </ScrollView>
     </View>
   );

@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { Download } from 'lucide-react-native';
-import TransactionInfoCard from '../cards/TransactionInfoCard';
-import NoDataInfo from '../NoDataInfo';
+import Loader from '../Loader';
+const TransactionInfoCard = lazy(() => import('../cards/TransactionInfoCard'));
+const NoDataInfo = lazy(() => import('../NoDataInfo'));
 
-const ExpenseList = ({ onDelete, onDownload, transactions,onHandleUpdate }) => {
-
+const ExpenseList = ({
+  onDelete,
+  onDownload,
+  transactions,
+  onHandleUpdate,
+}) => {
   return (
     <View className="bg-white rounded-2xl p-4 shadow-md mt-3 mb-10 mx-4">
       {/* Header */}
@@ -25,25 +30,27 @@ const ExpenseList = ({ onDelete, onDownload, transactions,onHandleUpdate }) => {
       </View>
 
       {/* List */}
-      {transactions.length > 0 ? (
-        <View className="flex flex-wrap flex-row justify-between">
-          {transactions.map(expense => (
-            <View key={expense._id} className="w-full md:w-[48%] mb-3">
-              <TransactionInfoCard
-                title={expense.category}
-                icon={expense.icon}
-                date={moment(expense.date).format('DD MMM YYYY')}
-                amount={expense.amount}
-                type="expense"
-                onDelete={() => onDelete(expense._id)}
-                onHandleUpdate={()=>onHandleUpdate(expense)}
-              />
-            </View>
-          ))}
-        </View>
-      ) : (
-        <NoDataInfo />
-      )}
+      <Suspense fallback={<Loader />}>
+        {transactions.length > 0 ? (
+          <View className="flex flex-wrap flex-row justify-between">
+            {transactions.map(expense => (
+              <View key={expense._id} className="w-full md:w-[48%] mb-3">
+                <TransactionInfoCard
+                  title={expense.category}
+                  icon={expense.icon}
+                  date={moment(expense.date).format('DD MMM YYYY')}
+                  amount={expense.amount}
+                  type="expense"
+                  onDelete={() => onDelete(expense._id)}
+                  onHandleUpdate={() => onHandleUpdate(expense)}
+                />
+              </View>
+            ))}
+          </View>
+        ) : (
+          <NoDataInfo />
+        )}
+      </Suspense>
     </View>
   );
 };

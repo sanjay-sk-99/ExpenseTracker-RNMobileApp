@@ -1,23 +1,27 @@
 import React, { useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
+import { verticalScale } from 'react-native-size-matters';
 import { scale } from 'react-native-size-matters';
 import { UserContext } from '../context/userontext';
 import { SIDE_MENU_DATA } from '../utils/sideMenuData';
 import CharAvatar from '../components/cards/CharAvatar';
+import Header from './Header';
 
 export default function CustomDrawerContent({ navigation, state }) {
   const { user } = useContext(UserContext);
 
   return (
+    <>
+    <Header showDrawer={false} bgcolor={'#f1f3f4'} />
     <DrawerContentScrollView
-      contentContainerStyle={{ flex: 1, backgroundColor: 'white' }}
+      contentContainerStyle={{ flex: 1,paddingTop:verticalScale(10), backgroundColor: '#f1f3f4' }}
     >
       {/* Profile Section */}
-      <View className="items-center justify-center mt-5 mb-5">
+      <View className="items-center justify-center mb-5">
         {user?.profileImageUrl ? (
           <Image
-            source={{ uri:user.profileImageUrl }}
+            source={{ uri: user.profileImageUrl }}
             className="rounded-full bg-slate-400"
             style={{ width: scale(110), height: scale(110) }}
           />
@@ -61,7 +65,7 @@ export default function CustomDrawerContent({ navigation, state }) {
         })}
       </ScrollView>
     </DrawerContentScrollView>
+    </>
+    
   );
 }
-
-

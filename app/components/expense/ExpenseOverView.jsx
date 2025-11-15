@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import CustomLineChart from '../charts/CustomLineChart'
+import Loader from '../Loader';
 import { prepareExpenseLineChartData } from '../../utils/helper';
+const CustomLineChart = lazy(() => import('../charts/CustomLineChart'));
 
-const ExpenseOverview = ({ transactions,  onAddExpense }) => {
+const ExpenseOverview = ({ transactions, onAddExpense }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -19,10 +20,11 @@ const ExpenseOverview = ({ transactions,  onAddExpense }) => {
       <View className="flex-row items-center justify-between">
         <View className="flex-1">
           <Text className="text-xl font-semibold text-gray-900">
-           Expense Overview
+            Expense Overview
           </Text>
           <Text className="text-sm  text-gray-400 mt-1">
-            Track your spending trends over time and gain insights into where your money goes.
+            Track your spending trends over time and gain insights into where
+            your money goes.
           </Text>
         </View>
 
@@ -30,8 +32,10 @@ const ExpenseOverview = ({ transactions,  onAddExpense }) => {
           className="flex-row items-center justify-center gap-1.5  text-purple-600 whitespace-nowrap bg-purple-50 border border-purple-100 rounded-lg px-2 py-2 "
           onPress={onAddExpense}
         >
-          <Plus color='#9333ea'/>
-          <Text className="flex justify-center font-semibold text-lg text-purple-600">Add Expense</Text>
+          <Plus color="#9333ea" />
+          <Text className="flex justify-center font-semibold text-lg text-purple-600">
+            Add Expense
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -41,8 +45,9 @@ const ExpenseOverview = ({ transactions,  onAddExpense }) => {
         showsHorizontalScrollIndicator={false}
         className="mt-6"
       >
-        {/* <CustomBarChart data={chartData} /> */}
-        <CustomLineChart data={chartData}/>
+        <Suspense fallback={<Loader />}>
+          <CustomLineChart data={chartData} />
+        </Suspense>
       </ScrollView>
     </View>
   );
