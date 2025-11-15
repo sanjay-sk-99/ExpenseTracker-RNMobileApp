@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef,useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Animated } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import {
@@ -18,7 +18,19 @@ const TransactionInfoCard = ({
   hideDeleteBtn,
   onDelete,
   onHandleUpdate,
+  onSwipeableWillOpen
 }) => {
+  const swipeableRef = useRef(null);
+
+  const handleDelete = () => {
+    swipeableRef.current?.close();
+    onDelete();
+  };
+
+  const handleUpdate = () => {
+    swipeableRef.current?.close();
+    onHandleUpdate();
+  };
   const isUrl =
     typeof icon === 'string' &&
     (icon.startsWith('http://') || icon.startsWith('https://'));
@@ -38,7 +50,7 @@ const TransactionInfoCard = ({
     return (
       <>
         <TouchableOpacity
-          onPress={onHandleUpdate}
+          onPress={handleUpdate}
           className="bg-green-500 w-16 mt-2 justify-center items-center rounded-r-lg"
         >
           <Animated.View style={{ transform: [{ scale }] }}>
@@ -47,7 +59,7 @@ const TransactionInfoCard = ({
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={onDelete}
+          onPress={handleDelete}
           className="bg-red-500 w-16 mt-2 justify-center items-center "
         >
           <Animated.View style={{ transform: [{ scale }] }}>
@@ -60,6 +72,8 @@ const TransactionInfoCard = ({
 
   return (
     <Swipeable
+      ref={swipeableRef}
+      onSwipeableWillOpen={() => onSwipeableWillOpen?.(swipeableRef.current)}
       renderRightActions={!hideDeleteBtn ? renderRightActions : undefined}
       overshootRight={false}
     >

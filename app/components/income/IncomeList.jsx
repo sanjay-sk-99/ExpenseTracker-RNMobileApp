@@ -1,13 +1,13 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useRef } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { Download } from 'lucide-react-native';
 import Loader from '../Loader';
 const TransactionInfoCard = lazy(() => import('../cards/TransactionInfoCard'));
-const NoDataInfo = lazy(()=>import('../NoDataInfo'))
-
+const NoDataInfo = lazy(() => import('../NoDataInfo'));
 
 const IncomeList = ({ onDelete, onDownload, transactions, onHandleUpdate }) => {
+  const openedRow = useRef(null);
   return (
     <View className="bg-white rounded-2xl p-4 shadow-md mt-3 mb-10 mx-4">
       {/* Header */}
@@ -41,6 +41,15 @@ const IncomeList = ({ onDelete, onDownload, transactions, onHandleUpdate }) => {
                   type="income"
                   onDelete={() => onDelete(income._id)}
                   onHandleUpdate={() => onHandleUpdate(income)}
+                  onSwipeableWillOpen={swipeableRef => {
+                    if (
+                      openedRow.current &&
+                      openedRow.current !== swipeableRef
+                    ) {
+                      openedRow.current.close();
+                    }
+                    openedRow.current = swipeableRef;
+                  }}
                 />
               </View>
             ))}
