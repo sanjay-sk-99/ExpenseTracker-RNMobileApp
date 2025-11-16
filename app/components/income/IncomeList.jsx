@@ -1,12 +1,18 @@
-import React, { lazy, Suspense, useRef } from 'react';
+import React, { useRef } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { Download } from 'lucide-react-native';
 import Loader from '../Loader';
-const TransactionInfoCard = lazy(() => import('../cards/TransactionInfoCard'));
-const NoDataInfo = lazy(() => import('../NoDataInfo'));
+import TransactionInfoCard from '../cards/TransactionInfoCard';
+import NoDataInfo from '../NoDataInfo';
 
-const IncomeList = ({ onDelete, onDownload, transactions, onHandleUpdate }) => {
+const IncomeList = ({
+  onDelete,
+  onDownload,
+  transactions,
+  onHandleUpdate,
+  isLoading,
+}) => {
   const openedRow = useRef(null);
   return (
     <View className="bg-white rounded-2xl p-4 shadow-md mt-3 mb-10 mx-4">
@@ -28,36 +34,33 @@ const IncomeList = ({ onDelete, onDownload, transactions, onHandleUpdate }) => {
       </View>
 
       {/* List */}
-      <Suspense fallback={<Loader />}>
-        {transactions.length > 0 ? (
-          <View className="flex flex-wrap flex-row justify-between">
-            {transactions.map(income => (
-              <View key={income._id} className="w-full md:w-[48%] mb-3">
-                <TransactionInfoCard
-                  title={income.source}
-                  icon={income.icon}
-                  date={moment(income.date).format('DD MMM YYYY')}
-                  amount={income.amount}
-                  type="income"
-                  onDelete={() => onDelete(income._id)}
-                  onHandleUpdate={() => onHandleUpdate(income)}
-                  onSwipeableWillOpen={swipeableRef => {
-                    if (
-                      openedRow.current &&
-                      openedRow.current !== swipeableRef
-                    ) {
-                      openedRow.current.close();
-                    }
-                    openedRow.current = swipeableRef;
-                  }}
-                />
-              </View>
-            ))}
-          </View>
-        ) : (
-          <NoDataInfo />
-        )}
-      </Suspense>
+      {isLoading ? (
+        <Loader />
+      ) : transactions.length > 0 ? (
+        <View className="flex flex-wrap flex-row justify-between">
+          {transactions.map(income => (
+            <View key={income._id} className="w-full md:w-[48%] mb-3">
+              <TransactionInfoCard
+                title={income.source}
+                icon={income.icon}
+                date={moment(income.date).format('DD MMM YYYY')}
+                amount={income.amount}
+                type="income"
+                onDelete={() => onDelete(income._id)}
+                onHandleUpdate={() => onHandleUpdate(income)}
+                onSwipeableWillOpen={swipeableRef => {
+                  if (openedRow.current && openedRow.current !== swipeableRef) {
+                    openedRow.current.close();
+                  }
+                  openedRow.current = swipeableRef;
+                }}
+              />
+            </View>
+          ))}
+        </View>
+      ) : (
+        <NoDataInfo />
+      )}
     </View>
   );
 };

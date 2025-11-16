@@ -1,11 +1,10 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import Loader from '../Loader';
 import { prepareExpenseLineChartData } from '../../utils/helper';
-const CustomLineChart = lazy(() => import('../charts/CustomLineChart'));
+import CustomLineChart from '../charts/CustomLineChart';
 
-const ExpenseOverview = ({ transactions, onAddExpense }) => {
+const ExpenseOverview = ({ transactions, onAddExpense, isLoading }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -45,9 +44,7 @@ const ExpenseOverview = ({ transactions, onAddExpense }) => {
         showsHorizontalScrollIndicator={false}
         className="mt-6"
       >
-        <Suspense fallback={<Loader />}>
-          <CustomLineChart data={chartData} />
-        </Suspense>
+        <CustomLineChart data={chartData} isLoading={isLoading} />
       </ScrollView>
     </View>
   );

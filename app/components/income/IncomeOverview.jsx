@@ -1,11 +1,10 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import Loader from '../Loader';
-const CustomBarChart = lazy(() => import('../charts/CustomBarChart'));
+import CustomBarChart from '../charts/CustomBarChart';
 import { prepareIncomeBarChartData } from '../../utils/helper';
 
-const IncomeOverview = ({ transactions, onAddIncome }) => {
+const IncomeOverview = ({ transactions, onAddIncome, isLoading }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -44,9 +43,7 @@ const IncomeOverview = ({ transactions, onAddIncome }) => {
         showsHorizontalScrollIndicator={false}
         className="mt-6"
       >
-        <Suspense fallback={<Loader />}>
-          <CustomBarChart data={chartData} />
-        </Suspense>
+        <CustomBarChart data={chartData} isLoading={isLoading} />
       </ScrollView>
     </View>
   );

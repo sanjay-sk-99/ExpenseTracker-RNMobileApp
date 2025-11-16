@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import * as Keychain from 'react-native-keychain';
 import { BASE_URL } from '../../services/endPoint';
@@ -21,7 +15,7 @@ import { X } from 'lucide-react-native';
 
 const ExpenseScreen = () => {
   const [expenseData, setExpenseData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [openAddExpenseModel, setOpenAddExpenseModel] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [expense, setExpense] = useState({
@@ -40,9 +34,9 @@ const ExpenseScreen = () => {
 
   //Get All Expense Details
   const fetchExpenseDetails = async () => {
-    if (loading) return;
+    if (isLoading) return;
 
-    setLoading(true);
+    setIsLoading(true);
 
     try {
       const response = await axiosInstance.get(
@@ -56,7 +50,7 @@ const ExpenseScreen = () => {
       console.log('something went wrong. Please try again.', error);
       toast.show('Failed to fetch income data', { type: 'danger' });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -210,6 +204,7 @@ const ExpenseScreen = () => {
             setExpense({ category: '', amount: '', date: '', icon: '' });
             setOpenAddExpenseModel(true);
           }}
+          isLoading={isLoading}
         />
 
         {/* Expense List */}
@@ -218,8 +213,8 @@ const ExpenseScreen = () => {
           onDelete={id => setDeleteId(id)}
           onDownload={handleDownloadExpenseDetails}
           onHandleUpdate={handleUpdate}
+          isLoading={isLoading}
         />
-
       </ScrollView>
 
       {/* Add Expense Modal */}

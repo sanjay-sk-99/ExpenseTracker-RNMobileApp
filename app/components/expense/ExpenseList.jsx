@@ -1,16 +1,17 @@
-import React, { lazy, Suspense,useRef } from 'react';
+import React, { useRef } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { Download } from 'lucide-react-native';
 import Loader from '../Loader';
-const TransactionInfoCard = lazy(() => import('../cards/TransactionInfoCard'));
-const NoDataInfo = lazy(() => import('../NoDataInfo'));
+import TransactionInfoCard from '../cards/TransactionInfoCard';
+import NoDataInfo from '../NoDataInfo';
 
 const ExpenseList = ({
   onDelete,
   onDownload,
   transactions,
   onHandleUpdate,
+  isLoading,
 }) => {
   const openedRow = useRef(null);
   return (
@@ -31,36 +32,33 @@ const ExpenseList = ({
       </View>
 
       {/* List */}
-      <Suspense fallback={<Loader />}>
-        {transactions.length > 0 ? (
-          <View className="flex flex-wrap flex-row justify-between">
-            {transactions.map(expense => (
-              <View key={expense._id} className="w-full md:w-[48%] mb-3">
-                <TransactionInfoCard
-                  title={expense.category}
-                  icon={expense.icon}
-                  date={moment(expense.date).format('DD MMM YYYY')}
-                  amount={expense.amount}
-                  type="expense"
-                  onDelete={() => onDelete(expense._id)}
-                  onHandleUpdate={() => onHandleUpdate(expense)}
-                  onSwipeableWillOpen={swipeableRef => {
-                    if (
-                      openedRow.current &&
-                      openedRow.current !== swipeableRef
-                    ) {
-                      openedRow.current.close();
-                    }
-                    openedRow.current = swipeableRef;
-                  }}
-                />
-              </View>
-            ))}
-          </View>
-        ) : (
-          <NoDataInfo />
-        )}
-      </Suspense>
+      {isLoading ? (
+        <Loader />
+      ) : transactions.length > 0 ? (
+        <View className="flex flex-wrap flex-row justify-between">
+          {transactions.map(expense => (
+            <View key={expense._id} className="w-full md:w-[48%] mb-3">
+              <TransactionInfoCard
+                title={expense.category}
+                icon={expense.icon}
+                date={moment(expense.date).format('DD MMM YYYY')}
+                amount={expense.amount}
+                type="expense"
+                onDelete={() => onDelete(expense._id)}
+                onHandleUpdate={() => onHandleUpdate(expense)}
+                onSwipeableWillOpen={swipeableRef => {
+                  if (openedRow.current && openedRow.current !== swipeableRef) {
+                    openedRow.current.close();
+                  }
+                  openedRow.current = swipeableRef;
+                }}
+              />
+            </View>
+          ))}
+        </View>
+      ) : (
+        <NoDataInfo />
+      )}
     </View>
   );
 };
