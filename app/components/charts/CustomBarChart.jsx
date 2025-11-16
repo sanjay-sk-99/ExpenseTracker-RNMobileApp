@@ -2,9 +2,10 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import NoDataInfo from '../NoDataInfo';
 import { BarChart } from 'react-native-gifted-charts';
+import Loader from '../Loader';
 import { scale, moderateScale, verticalScale } from 'react-native-size-matters';
 
-const CustomBarChart = ({ data = [] }) => {
+const CustomBarChart = ({ data = [], isLoading }) => {
   // Alternating bar colors
   const getBarColor = index => {
     return index % 2 === 0 ? '#875cf5' : '#cfbefb';
@@ -18,11 +19,12 @@ const CustomBarChart = ({ data = [] }) => {
     month: item.month,
     category: item.category,
   }));
- 
 
   return (
     <View className=" p-4  mt-4 ">
-      {chartData.length > 0 ? (
+      {isLoading ? (
+        <Loader />
+      ) : chartData.length > 0 ? (
         <BarChart
           data={chartData}
           barWidth={moderateScale(22)}

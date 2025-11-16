@@ -27,7 +27,7 @@ const IncomeScreen = () => {
     date: '',
     icon: '',
   });
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [updateId, setUpdateId] = useState(null);
@@ -40,8 +40,8 @@ const IncomeScreen = () => {
 
   // ✅ Fetch all income details
   const fetchIncomeDetails = async () => {
-    if (loading) return;
-    setLoading(true);
+    if (isLoading) return;
+    setIsLoading(true);
     try {
       const response = await axiosInstance.get(API_PATHS.INCOME.GET_ALL_INCOME);
       if (response.data) {
@@ -51,7 +51,7 @@ const IncomeScreen = () => {
       console.error('Error fetching income data:', error);
       toast.show('Failed to fetch income data', { type: 'danger' });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -184,6 +184,7 @@ const IncomeScreen = () => {
             setIncome({ source: '', amount: '', date: '', icon: '' });
             setOpenAddIncomeModal(true);
           }}
+          isLoading={isLoading}
         />
 
         {/* Income List */}
@@ -192,6 +193,7 @@ const IncomeScreen = () => {
           onDelete={id => setDeleteId(id)}
           onDownload={handleDownloadIncomeDetails}
           onHandleUpdate={handleUpdate}
+          isLoading={isLoading}
         />
       </ScrollView>
 

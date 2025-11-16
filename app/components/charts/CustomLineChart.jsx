@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import NoDataInfo from '../NoDataInfo';
+import Loader from '../Loader';
 import { LineChart } from 'react-native-gifted-charts';
 
-const CustomLineChart = ({ data }) => {
+const CustomLineChart = ({ data, isLoading }) => {
   // Convert your web data [{ month, amount }] to GiftedCharts format
   const chartData = data.map(item => ({
     value: item.amount,
@@ -13,8 +14,9 @@ const CustomLineChart = ({ data }) => {
 
   return (
     <View className="bg-white p-4 rounded-2xl shadow-sm">
-
-      {chartData.length > 0 ? (
+      {isLoading ? (
+        <Loader />
+      ) : chartData.length > 0 ? (
         <LineChart
           data={chartData}
           color={'#B75CF5'}
