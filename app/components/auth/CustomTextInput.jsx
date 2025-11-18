@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Modal,
+  ScrollView
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
@@ -94,6 +95,7 @@ const CustomTextInput = ({
         animationType="fade"
         onRequestClose={() => setShowDatePicker(false)}
       >
+       <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
         <TouchableOpacity
           style={styles.modalOverlay}
           activeOpacity={1}
@@ -133,6 +135,7 @@ const CustomTextInput = ({
             />
           </View>
         </TouchableOpacity>
+        </ScrollView>
       </Modal>
     </View>
   );

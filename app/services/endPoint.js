@@ -1,4 +1,5 @@
 export const BASE_URL = 'https://expensetrackerbackend-xvhi.onrender.com';
+// export const BASE_URL = 'http://192.168.29.225:8000';
 
 export const API_PATHS = {
   AUTH: {

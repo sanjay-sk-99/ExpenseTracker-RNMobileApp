@@ -195,7 +195,7 @@ const ExpenseScreen = () => {
   return (
     <View className="flex-1 bg-white">
       <Header />
-      <ScrollView className="px-4">
+      <ScrollView className="px-4" showsVerticalScrollIndicator={false}>
         {/* Expense Overview */}
         <ExpenseOverview
           transactions={expenseData}

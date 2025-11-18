@@ -1,11 +1,12 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
-import React, { useEffect, useContext,useCallback } from 'react';
+import React, { useEffect, useContext, useCallback } from 'react';
 import { addThousandsSeparator } from '../../utils/helper';
 import { useAxiosInterceptors } from '../../services/axiosInstance';
 import { UserContext } from '../../context/userontext';
 import { API_PATHS } from '../../services/endPoint';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useToast } from 'react-native-toast-notifications';
 import InfoCard from '../../components/cards/InfoCard';
 import RecentTransactions from '../../components/dashboard/RecentTransactions';
 import ExpenseTransactions from '../../components/dashboard/ExpenseTransactions';
@@ -22,6 +23,8 @@ const Home = () => {
     useContext(UserContext);
   const axiosInstance = useAxiosInterceptors();
   const navigation = useNavigation();
+  const toast = useToast();
+
   const fetchData = async () => {
     if (loading) return;
 
@@ -31,7 +34,7 @@ const Home = () => {
       const response = await axiosInstance.get(
         `${API_PATHS.DASHBOARD.GET_DATA}`,
       );
-      
+
       if (response.data) {
         setDashboardData(response.data);
       }
@@ -45,12 +48,16 @@ const Home = () => {
   useFocusEffect(
     useCallback(() => {
       fetchData();
-    }, [])
+    }, []),
   );
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <Header />
-      <ScrollView className="px-4" keyboardShouldPersistTaps="handled">
+      <ScrollView
+        className="px-4"
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
         <View className="mx-4">
           <InfoCard
             icon={<Feather name="credit-card" size={26} color="#fff" />}
@@ -75,9 +82,11 @@ const Home = () => {
             <RecentTransactions
               transactions={dashboardData?.recentTransactions}
               onSeeMore={() =>
-                dashboardData?.recentTransactions[0].type === 'expense'
-                  ? navigation.navigate('Expense')
-                  : navigation.navigate('Income')
+                dashboardData?.recentTransactions?.length > 0
+                  ? dashboardData.recentTransactions[0].type === 'expense'
+                    ? navigation.navigate('Expense')
+                    : navigation.navigate('Income')
+                  : toast.show('No Recent Transactions', { type: 'info' })
               }
             />
             <FinancialOverview
