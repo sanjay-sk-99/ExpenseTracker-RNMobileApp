@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import * as Keychain from 'react-native-keychain';
 import { BASE_URL } from '../../services/endPoint';
@@ -174,7 +168,7 @@ const IncomeScreen = () => {
   return (
     <View className="flex-1 bg-white">
       <Header />
-      <ScrollView className="px-4">
+      <ScrollView className="px-4" showsVerticalScrollIndicator={false}>
         {/* Income Overview */}
         <IncomeOverview
           transactions={incomeData}
