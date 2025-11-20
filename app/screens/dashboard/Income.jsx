@@ -12,11 +12,8 @@ import IncomeList from '../../components/income/IncomeList';
 import AddIncomeForm from '../../components/income/AddIncomeForm';
 import DeleteAlert from '../../components/DeleteAlert';
 import { X } from 'lucide-react-native';
-import { useWindowDimensions } from 'react-native';
 
 const IncomeScreen = () => {
-  const { width, height } = useWindowDimensions();
-  const isLandscape = width > height;
   const [incomeData, setIncomeData] = useState([]);
   const [income, setIncome] = useState({
     source: '',
@@ -168,31 +165,6 @@ const IncomeScreen = () => {
     }
   };
 
-  const renderModalContent = () => (
-    <View className="bg-white mx-5 rounded-2xl p-5">
-      <View className="flex-row justify-between mb-2">
-        <Text className="text-lg font-semibold text-gray-800">
-          {updateId ? 'Update Income' : 'Add Income'}
-        </Text>
-        <TouchableOpacity onPress={() => {
-          setOpenAddIncomeModal(false);
-          setUpdateId(null); // clear update state when modal closed
-          setIncome({ source: '', amount: '', date: '', icon: '' });
-        }} className="p-1">
-          <X size={24} color="#4B5563" />
-        </TouchableOpacity>
-      </View>
-
-      <AddIncomeForm
-        onAddIncome={handleAddIncome}
-        onUpdateIncome={updateIncome}
-        updateId={updateId}
-        income={income}
-        setIncome={setIncome}
-      />
-    </View>
-  );
-
   return (
     <View className="flex-1 bg-white">
       <Header />
@@ -220,46 +192,6 @@ const IncomeScreen = () => {
       </ScrollView>
 
       {/* Add Income Modal */}
-      {/* <Modal
-        visible={openAddIncomeModal}
-        animationType="slide"
-        transparent
-        onRequestClose={() => {
-          setOpenAddIncomeModal(false);
-          setUpdateId(null); // clear update state when modal closed
-          setIncome({ source: '', amount: '', date: '', icon: '' });
-        }}
-      >
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
-          <View className="flex-1 justify-center bg-black/50">
-            <View className="flex bg-white mx-5 rounded-2xl p-5">
-              <View className="flex-row justify-between rounded-2xl mb-2">
-                <Text className="text-lg font-semibold mb-3 text-gray-800">
-                  {updateId ? 'Update Income' : 'Add Income'}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setOpenAddIncomeModal(false);
-                    setUpdateId(null);
-                    setIncome({ source: '', amount: '', date: '', icon: '' });
-                  }}
-                  className="p-1"
-                >
-                  <X size={24} color="#4B5563" />
-                </TouchableOpacity>
-              </View>
-
-              <AddIncomeForm
-                onAddIncome={handleAddIncome}
-                onUpdateIncome={updateIncome}
-                updateId={updateId}
-                income={income}
-                setIncome={setIncome}
-              />
-            </View>
-          </View>
-        </ScrollView>
-      </Modal> */}
       <Modal
         visible={openAddIncomeModal}
         animationType="slide"
@@ -270,19 +202,32 @@ const IncomeScreen = () => {
           setIncome({ source: '', amount: '', date: '', icon: '' });
         }}
       >
-        <View className="flex-1 bg-black/50 justify-center">
-          {isLandscape ? (
-            //Landscape → use ScrollView to allow scrolling
-            <ScrollView
-              contentContainerStyle={{ flexGrow: 1 }}
-              showsVerticalScrollIndicator={false}
-            >
-              {renderModalContent()}
-            </ScrollView>
-          ) : (
-            //Portrait → NO ScrollView → no nested VirtualizedList error
-            renderModalContent()
-          )}
+        <View className="flex-1 justify-center bg-black/50">
+          <View className="flex bg-white mx-5 rounded-2xl p-5">
+            <View className="flex-row justify-between rounded-2xl mb-2">
+              <Text className="text-lg font-semibold mb-3 text-gray-800">
+                {updateId ? 'Update Income' : 'Add Income'}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setOpenAddIncomeModal(false);
+                  setUpdateId(null);
+                  setIncome({ source: '', amount: '', date: '', icon: '' });
+                }}
+                className="p-1"
+              >
+                <X size={24} color="#4B5563" />
+              </TouchableOpacity>
+            </View>
+
+            <AddIncomeForm
+              onAddIncome={handleAddIncome}
+              onUpdateIncome={updateIncome}
+              updateId={updateId}
+              income={income}
+              setIncome={setIncome}
+            />
+          </View>
         </View>
       </Modal>
 
